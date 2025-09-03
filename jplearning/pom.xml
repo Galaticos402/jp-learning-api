@@ -54,6 +54,11 @@
             <artifactId>flyway-core</artifactId>
             <version>11.7.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
 	</dependencies>
 
 	<build>
