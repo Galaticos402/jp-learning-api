@@ -1,0 +1,15 @@
+CREATE DATABASE JPLearningApp;
+
+USE JPLearningApp;
+
+CREATE TABLE SystemUser (
+  user_id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  nick_name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  phone_number VARCHAR(15) NOT NULL,
+  dob DATE NOT NULL,
+);
+
+CREATE
