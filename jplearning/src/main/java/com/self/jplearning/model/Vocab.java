@@ -11,8 +11,10 @@ import java.util.UUID;
 public class Vocab {
     public static final String VOCAB_ID = "vocab_id";
     public static final String KANJI = "kanji";
+    public static final String FURIGANA = "furigana";
     public static final String SINO_V = "sino_v";
     public static final String EX_SENTENCE = "ex_sentence";
+    public static final String EX_SENTENCE_MEANING = "ex_sentence_meaning";
     public static final String MEANING = "meaning";
     public static final String AUDIO_PATH = "audio_path";
     public static final String IMAGE_PATH = "image_path";
@@ -24,11 +26,17 @@ public class Vocab {
     @Column(name = KANJI)
     private String kanji;
 
+    @Column(name = FURIGANA)
+    private String furigana;
+
     @Column(name = SINO_V)
     private String sinoV;
 
     @Column(name = EX_SENTENCE)
     private String exSentence;
+
+    @Column(name = EX_SENTENCE_MEANING)
+    private String exSentenceMeaning;
 
     @Column(name = MEANING)
     private String meaning;
