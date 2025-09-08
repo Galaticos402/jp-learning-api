@@ -1,12 +1,11 @@
 package com.self.jplearning.controller;
 
-import com.self.jplearning.dto.SignUpResponseDto;
-import com.self.jplearning.dto.UserConfirmationDto;
-import com.self.jplearning.dto.UserRegisterDto;
+import com.self.jplearning.dto.*;
 import com.self.jplearning.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthenticationResultType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.SignUpResponse;
 
 @RestController
@@ -21,5 +20,9 @@ public class AuthController {
     @PostMapping(value = "/confirm")
     public ResponseEntity<Boolean> confirm(@RequestBody UserConfirmationDto userConfirmationDto){
         return ResponseEntity.ok(authService.confirm(userConfirmationDto.getEmail(), userConfirmationDto.getVerificationCode()));
+    }
+    @PostMapping(value = "/login")
+    public ResponseEntity<AuthResponseDto> login(@RequestBody UserLoginDto userLoginDto){
+        return ResponseEntity.ok(authService.login(userLoginDto.getEmail(), userLoginDto.getPassword()));
     }
 }

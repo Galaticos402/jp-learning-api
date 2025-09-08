@@ -1,6 +1,7 @@
 package com.self.jplearning.service;
 
 import com.self.jplearning.config.property.CognitoProperties;
+import com.self.jplearning.dto.AuthResponseDto;
 import com.self.jplearning.dto.SignUpResponseDto;
 import com.self.jplearning.dto.UserRegisterDto;
 import com.self.jplearning.utils.CognitoUtils;
@@ -10,6 +11,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityPr
 import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 @Service
 public class AuthService {
@@ -47,7 +49,23 @@ public class AuthService {
                 .build();
 
         ConfirmSignUpResponse result = cognitoClient.confirmSignUp(request);
-        // If no exception, confirmation succeeded
+        
         return true;
+    }
+
+    public AuthResponseDto login(String email, String password){
+        AdminInitiateAuthRequest authRequest = AdminInitiateAuthRequest.builder()
+                .userPoolId(cognitoProperties.getUserPoolId())
+                .clientId(cognitoProperties.getClientId())
+                .authFlow(AuthFlowType.ADMIN_NO_SRP_AUTH) // simple username/password auth
+                .authParameters(Map.of(
+                        "USERNAME", email,
+                        "PASSWORD", password,
+                        "SECRET_HASH", CognitoUtils.calculateSecretHash(email, cognitoProperties.getClientId(), cognitoProperties.getClientSecret())
+                ))
+                .build();
+
+        AdminInitiateAuthResponse response = cognitoClient.adminInitiateAuth(authRequest);
+        return AuthResponseDto.convert(response.authenticationResult());
     }
 }
