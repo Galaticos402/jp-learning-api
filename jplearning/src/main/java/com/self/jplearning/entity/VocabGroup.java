@@ -1,4 +1,4 @@
-package com.self.jplearning.model;
+package com.self.jplearning.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
