@@ -7,9 +7,7 @@ import com.self.jplearning.utils.CognitoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.SignUpRequest;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.SignUpResponse;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
 import java.text.SimpleDateFormat;
 
@@ -38,5 +36,18 @@ public class AuthService {
                 .build();
         SignUpResponse signUpResponse = cognitoClient.signUp(signUpRequest);
         return SignUpResponseDto.convert(signUpResponse);
+    }
+
+    public boolean confirm(String email, String verificationCode){
+        ConfirmSignUpRequest request =  ConfirmSignUpRequest.builder()
+                .clientId(cognitoProperties.getClientId())
+                .username(email)
+                .confirmationCode(verificationCode)
+                .secretHash(CognitoUtils.calculateSecretHash(email, cognitoProperties.getClientId(), cognitoProperties.getClientSecret()))
+                .build();
+
+        ConfirmSignUpResponse result = cognitoClient.confirmSignUp(request);
+        // If no exception, confirmation succeeded
+        return true;
     }
 }
