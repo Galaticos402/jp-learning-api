@@ -1,71 +1,88 @@
 package com.self.jplearning.service;
 
 import com.self.jplearning.config.property.CognitoProperties;
-import com.self.jplearning.dto.AuthResponseDto;
-import com.self.jplearning.dto.SignUpResponseDto;
-import com.self.jplearning.dto.UserRegisterDto;
-import com.self.jplearning.utils.CognitoUtils;
+import com.self.jplearning.dto.auth.AuthResponseDto;
+import com.self.jplearning.dto.auth.SignUpResponseDto;
+import com.self.jplearning.dto.auth.UserConfirmationDto;
+import com.self.jplearning.dto.auth.UserRegisterDto;
+import com.self.jplearning.entity.SystemUser;
+import com.self.jplearning.repository.ICognitoRepository;
+import com.self.jplearning.repository.IUserRepository;
+import com.self.jplearning.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Logger;
 
 @Service
 public class AuthService {
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     @Autowired
     private CognitoIdentityProviderClient cognitoClient;
     @Autowired
     private CognitoProperties cognitoProperties;
+    @Autowired
+    private IUserRepository userRepository;
+    @Autowired
+    private ICognitoRepository cognitoRepository;
 
     public SignUpResponseDto signUpUser(UserRegisterDto userRegisterDto){
-        SignUpRequest signUpRequest = SignUpRequest.builder()
-                .clientId(cognitoProperties.getClientId())
-                .username(userRegisterDto.getEmail())
-                .password(userRegisterDto.getPassword())
-                .userAttributes(
-                        AttributeType.builder().name(UserRegisterDto.FAMILY_NAME_ATTR).value(userRegisterDto.getFamilyName()).build(),
-                        AttributeType.builder().name(UserRegisterDto.GIVEN_NAME_ATTR).value(userRegisterDto.getGivenName()).build(),
-                        AttributeType.builder().name(UserRegisterDto.PHONE_NUM_ATTR).value(userRegisterDto.getPhoneNumbers()).build(),
-                        AttributeType.builder().name(UserRegisterDto.DOB_ATTR).value(new SimpleDateFormat("yyyy-MM-dd").format(userRegisterDto.getBirthdate())).build(),
-                        AttributeType.builder().name(UserRegisterDto.EMAIL_ATTR).value(userRegisterDto.getEmail()).build(),
-                        AttributeType.builder().name(UserRegisterDto.GENDER_ATTR).value(userRegisterDto.getGender()).build(),
-                        AttributeType.builder().name(UserRegisterDto.NICK_NAME_ATTR).value(userRegisterDto.getNickName()).build()
-                )
-                .secretHash(CognitoUtils.calculateSecretHash(userRegisterDto.getEmail(), cognitoProperties.getClientId(), cognitoProperties.getClientSecret()))
-                .build();
-        SignUpResponse signUpResponse = cognitoClient.signUp(signUpRequest);
+        // Sign up with Cognito
+        SignUpResponse signUpResponse = cognitoRepository.signUp(userRegisterDto);
+        // Sign up complete, now store user references in database
+        UUID userId = UUID.fromString(signUpResponse.userSub());
+        SystemUser systemUser = userRegisterDto.toSystemUser(userId, AppUtils.RoleType.LEARNER);
+        userRepository.save(systemUser);
+
         return SignUpResponseDto.convert(signUpResponse);
     }
 
-    public boolean confirm(String email, String verificationCode){
-        ConfirmSignUpRequest request =  ConfirmSignUpRequest.builder()
-                .clientId(cognitoProperties.getClientId())
-                .username(email)
-                .confirmationCode(verificationCode)
-                .secretHash(CognitoUtils.calculateSecretHash(email, cognitoProperties.getClientId(), cognitoProperties.getClientSecret()))
-                .build();
+    public UserConfirmationDto.ConfirmationResult confirm(String email, String verificationCode){
+        try{
+            boolean confirmResult = cognitoRepository.confirm(email, verificationCode);
+            return UserConfirmationDto.ConfirmationResult.builder().status(confirmResult).build();
+        }
+        catch (ExpiredCodeException expiredCodeException){
+            return UserConfirmationDto.ConfirmationResult.builder().errMsg("Token expired").build();
+        }
+        catch (CodeMismatchException mismatchException){
+            return UserConfirmationDto.ConfirmationResult.builder().errMsg("Token mismatched").build();
+        }
+        catch (Exception e){
+            return UserConfirmationDto.ConfirmationResult.builder().errMsg(e.getMessage()).build();
+        }
+    }
 
-        ConfirmSignUpResponse result = cognitoClient.confirmSignUp(request);
-        
-        return true;
+    public UserConfirmationDto.CodeResendResult resendCode(String email){
+        try{
+            ResendConfirmationCodeResponse res = cognitoRepository.resendConfirmationCode(email);
+            return UserConfirmationDto.CodeResendResult.builder().status(true).build();
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            return UserConfirmationDto.CodeResendResult.builder()
+                    .status(false)
+                    .errMsg(e.getMessage())
+                    .build();
+        }
     }
 
     public AuthResponseDto login(String email, String password){
-        AdminInitiateAuthRequest authRequest = AdminInitiateAuthRequest.builder()
-                .userPoolId(cognitoProperties.getUserPoolId())
-                .clientId(cognitoProperties.getClientId())
-                .authFlow(AuthFlowType.ADMIN_NO_SRP_AUTH) // simple username/password auth
-                .authParameters(Map.of(
-                        "USERNAME", email,
-                        "PASSWORD", password,
-                        "SECRET_HASH", CognitoUtils.calculateSecretHash(email, cognitoProperties.getClientId(), cognitoProperties.getClientSecret())
-                ))
-                .build();
-
+        // Check if user has existed on Cognito
+        try{
+            AdminGetUserResponse userOnCognito = cognitoRepository.getUserByEmail(email);
+            if(!userOnCognito.enabled()){
+                // User has existed yet has not been verified - notify the client
+                return AuthResponseDto.requireConfirmation();
+            }
+        }catch (UserNotFoundException userNotFoundExp){
+            return AuthResponseDto.failed(userNotFoundExp.getMessage());
+        }
+        // User existed and already enabled - Proceed with tokens
+        AdminInitiateAuthRequest authRequest = cognitoRepository.login(email, password);
         AdminInitiateAuthResponse response = cognitoClient.adminInitiateAuth(authRequest);
-        return AuthResponseDto.convert(response.authenticationResult());
+        return AuthResponseDto.success(response.authenticationResult());
     }
 }

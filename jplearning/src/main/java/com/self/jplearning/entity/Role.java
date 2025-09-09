@@ -13,9 +13,9 @@ public class Role {
     public static final String ROLE_NAME = "role_name";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = ROLE_ID)
-    private UUID roleId;
+    private int roleId;
 
     @Column(name = ROLE_NAME)
     private String roleName;

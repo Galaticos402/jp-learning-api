@@ -1,4 +1,4 @@
-package com.self.jplearning.dto;
+package com.self.jplearning.dto.auth;
 
 import lombok.Data;
 

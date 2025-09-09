@@ -2,20 +2,15 @@ CREATE DATABASE JPLearningApp;
 
 USE JPLearningApp;
 
-CREATE TABLE Role(
-    role_id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    role_name VARCHAR(50) NOT NULL,
+CREATE TABLE Role (
+    role_id INT IDENTITY(1,1) PRIMARY KEY,
+    role_name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE SystemUser (
-  user_id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(100) NOT NULL,
-  nick_name VARCHAR(100) NOT NULL,
+  user_id UNIQUEIDENTIFIER PRIMARY KEY,
   email VARCHAR(100) NOT NULL,
-  phone_number VARCHAR(15) NOT NULL,
-  dob DATE NOT NULL,
-  role_id UNIQUEIDENTIFIER NOT NULL,
+  role_id INT NOT NULL,
   CONSTRAINT fk_user_role
         FOREIGN KEY (role_id)
         REFERENCES Role(role_id)

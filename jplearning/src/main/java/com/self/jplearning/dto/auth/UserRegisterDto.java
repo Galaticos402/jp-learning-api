@@ -1,9 +1,13 @@
-package com.self.jplearning.dto;
+package com.self.jplearning.dto.auth;
 
+import com.self.jplearning.entity.Role;
+import com.self.jplearning.entity.SystemUser;
+import com.self.jplearning.utils.AppUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 public class UserRegisterDto {
@@ -31,4 +35,14 @@ public class UserRegisterDto {
     private String givenName;
     @Schema(description = "Family Name", example = "Dang", defaultValue = "Dang")
     private String familyName;
+
+    public SystemUser toSystemUser(UUID userId, AppUtils.RoleType roleType){
+        SystemUser systemUser = new SystemUser();
+        systemUser.setUserId(userId);
+        systemUser.setEmail(this.getEmail());
+        Role userRole = new Role();
+        userRole.setRoleId(roleType.getValue());
+        systemUser.setRole(userRole);
+        return systemUser;
+    }
 }
