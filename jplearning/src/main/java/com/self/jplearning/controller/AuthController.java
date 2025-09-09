@@ -2,6 +2,7 @@ package com.self.jplearning.controller;
 
 import com.self.jplearning.dto.auth.*;
 import com.self.jplearning.service.AuthService;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class AuthController {
     public ResponseEntity<UserConfirmationDto.CodeResendResult> confirm(@RequestParam String email){
         return ResponseEntity.ok(authService.resendCode(email));
     }
+    @PermitAll
     @PostMapping(value = "/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody UserLoginDto userLoginDto){
         return ResponseEntity.ok(authService.login(userLoginDto.getEmail(), userLoginDto.getPassword()));
