@@ -7,9 +7,11 @@ import com.nimbusds.jwt.SignedJWT;
 import org.springframework.stereotype.Service;
 
 import java.net.URL;
+import java.util.logging.Logger;
 
 @Service
 public class JwtService {
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     private static final String JWKS_URL = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_Lyfa5g0T6/.well-known/jwks.json";
     public boolean validateToken(String token) {
         try {
@@ -41,7 +43,7 @@ public class JwtService {
             return !claims.getExpirationTime().before(new java.util.Date());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(e.getMessage());
             return false;
         }
     }
