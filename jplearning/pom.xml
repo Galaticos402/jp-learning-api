@@ -80,6 +80,11 @@
             <artifactId>cognitoidentityprovider</artifactId>
             <version>2.33.4</version>
         </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>auth</artifactId>
+            <version>2.22.0</version>
+        </dependency>
 	</dependencies>
 
 	<build>

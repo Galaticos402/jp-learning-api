@@ -6,11 +6,11 @@ import lombok.Getter;
 public class AppUtils {
     @Getter
     public enum RoleType {
-        LEARNER(1);
+        LEARNER("Learner");
 
-        private final int value;
+        private final String value;
 
-        RoleType(int value) {
+        RoleType(String value) {
             this.value = value;
         }
     }

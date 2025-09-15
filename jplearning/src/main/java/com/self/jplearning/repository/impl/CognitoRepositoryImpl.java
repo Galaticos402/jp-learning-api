@@ -3,6 +3,7 @@ package com.self.jplearning.repository.impl;
 import com.self.jplearning.config.property.CognitoProperties;
 import com.self.jplearning.dto.auth.UserRegisterDto;
 import com.self.jplearning.repository.ICognitoRepository;
+import com.self.jplearning.utils.AppUtils;
 import com.self.jplearning.utils.CognitoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;

@@ -1,6 +1,5 @@
 package com.self.jplearning.dto.auth;
 
-import com.self.jplearning.entity.Role;
 import com.self.jplearning.entity.SystemUser;
 import com.self.jplearning.utils.AppUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,9 +39,9 @@ public class UserRegisterDto {
         SystemUser systemUser = new SystemUser();
         systemUser.setUserId(userId);
         systemUser.setEmail(this.getEmail());
-        Role userRole = new Role();
-        userRole.setRoleId(roleType.getValue());
-        systemUser.setRole(userRole);
+//        Role userRole = new Role();
+//        userRole.setRoleId(roleType.getValue());
+//        systemUser.setRole(userRole);
         return systemUser;
     }
 }

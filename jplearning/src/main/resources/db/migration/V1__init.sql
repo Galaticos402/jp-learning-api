@@ -2,20 +2,10 @@ CREATE DATABASE JPLearningApp;
 
 USE JPLearningApp;
 
-CREATE TABLE Role (
-    role_id INT IDENTITY(1,1) PRIMARY KEY,
-    role_name VARCHAR(50) NOT NULL
-);
 
 CREATE TABLE SystemUser (
   user_id UNIQUEIDENTIFIER PRIMARY KEY,
   email VARCHAR(100) NOT NULL,
-  role_id INT NOT NULL,
-  CONSTRAINT fk_user_role
-        FOREIGN KEY (role_id)
-        REFERENCES Role(role_id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
 
 CREATE TABLE VocabGroup (

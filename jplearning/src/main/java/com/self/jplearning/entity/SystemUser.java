@@ -19,8 +19,4 @@ public class SystemUser {
 
     @Column(name = EMAIL)
     private String email;
-
-    @ManyToOne
-    @JoinColumn(name = Role.ROLE_ID)
-    private Role role;
 }
