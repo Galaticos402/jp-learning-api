@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,17 +26,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromHeader(request);
         if (token != null && jwtService.validateToken(token)) {
-            String email = jwtService.getEmail(token);
-            List<String> roles = jwtService.getRoles(token);
+            try {
+                String username = jwtService.getClaimSet(token).getStringClaim("username");
+                List<String> groups = jwtService.getClaimSet(token).getStringListClaim("cognito:groups");
+                List<SimpleGrantedAuthority> authorities = groups != null
+                        ? groups.stream().map(SimpleGrantedAuthority::new).toList()
+                        : List.of();
 
-            List<GrantedAuthority> authorities = roles.stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(username, null, authorities);
 
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(email, null, authorities);
+                // Store in SecurityContext
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            } catch (ParseException e) {
+                throw new RuntimeException("Invalid token");
+            }
         }
         filterChain.doFilter(request, response);
     }

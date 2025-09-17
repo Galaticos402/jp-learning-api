@@ -24,7 +24,6 @@ public class AuthController {
     public ResponseEntity<UserConfirmationDto.CodeResendResult> confirm(@RequestParam String email){
         return ResponseEntity.ok(authService.resendCode(email));
     }
-    @PermitAll
     @PostMapping(value = "/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody UserLoginDto userLoginDto){
         return ResponseEntity.ok(authService.login(userLoginDto.getEmail(), userLoginDto.getPassword()));
