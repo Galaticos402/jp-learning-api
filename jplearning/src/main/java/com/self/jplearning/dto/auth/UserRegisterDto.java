@@ -14,7 +14,6 @@ public class UserRegisterDto {
     public static final String PASSWORD_ATTR = "password";
     public static final String DOB_ATTR = "birthdate";
     public static final String GENDER_ATTR = "gender";
-    public static final String NICK_NAME_ATTR = "nickname";
     public static final String PHONE_NUM_ATTR = "phone_number";
     public static final String GIVEN_NAME_ATTR = "given_name";
     public static final String FAMILY_NAME_ATTR = "family_name";
@@ -26,8 +25,6 @@ public class UserRegisterDto {
     private Date birthdate;
     @Schema(description = "Gender", example = "Male", defaultValue = "Male")
     private String gender;
-    @Schema(description = "Nickname", example = "MQuan", defaultValue = "MQuan")
-    private String nickName;
     @Schema(description = "Phone Numbers", example = "+84522457947", defaultValue = "+84522457947")
     private String phoneNumbers;
     @Schema(description = "Given Name", example = "Minh Quan", defaultValue = "Minh Quan")
