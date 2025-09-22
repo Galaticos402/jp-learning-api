@@ -63,8 +63,7 @@ public class CognitoRepositoryImpl implements ICognitoRepository {
                         AttributeType.builder().name(UserRegisterDto.PHONE_NUM_ATTR).value(userRegisterDto.getPhoneNumbers()).build(),
                         AttributeType.builder().name(UserRegisterDto.DOB_ATTR).value(new SimpleDateFormat("yyyy-MM-dd").format(userRegisterDto.getBirthdate())).build(),
                         AttributeType.builder().name(UserRegisterDto.EMAIL_ATTR).value(userRegisterDto.getEmail()).build(),
-                        AttributeType.builder().name(UserRegisterDto.GENDER_ATTR).value(userRegisterDto.getGender()).build(),
-                        AttributeType.builder().name(UserRegisterDto.NICK_NAME_ATTR).value(userRegisterDto.getNickName()).build()
+                        AttributeType.builder().name(UserRegisterDto.GENDER_ATTR).value(userRegisterDto.getGender()).build()
                 )
                 .secretHash(CognitoUtils.calculateSecretHash(userRegisterDto.getEmail(), cognitoProperties.getClientId(), cognitoProperties.getClientSecret()))
                 .build();
