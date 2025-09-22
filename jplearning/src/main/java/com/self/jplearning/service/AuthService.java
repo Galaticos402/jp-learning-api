@@ -73,16 +73,27 @@ public class AuthService {
         // Check if user has existed on Cognito
         try{
             AdminGetUserResponse userOnCognito = cognitoRepository.getUserByEmail(email);
-            if(!userOnCognito.enabled()){
+            boolean isEmailVerified = false;
+
+            for (AttributeType attribute : userOnCognito.userAttributes()) {
+                if ("email_verified".equals(attribute.name())) {
+                    isEmailVerified = Boolean.parseBoolean(attribute.value());
+                    break;
+                }
+            }
+            if(!isEmailVerified){
                 // User has existed yet has not been verified - notify the client
+                // Publish a new code for verification
+                resendCode(email);
                 return AuthResponseDto.requireConfirmation();
             }
-        }catch (UserNotFoundException userNotFoundExp){
-            return AuthResponseDto.failed(userNotFoundExp.getMessage());
+            // User existed and already enabled - Proceed with tokens
+            AdminInitiateAuthRequest authRequest = cognitoRepository.login(email, password);
+            AdminInitiateAuthResponse response = cognitoClient.adminInitiateAuth(authRequest);
+            return AuthResponseDto.success(response.authenticationResult());
         }
-        // User existed and already enabled - Proceed with tokens
-        AdminInitiateAuthRequest authRequest = cognitoRepository.login(email, password);
-        AdminInitiateAuthResponse response = cognitoClient.adminInitiateAuth(authRequest);
-        return AuthResponseDto.success(response.authenticationResult());
+        catch (CognitoIdentityProviderException e){
+            return AuthResponseDto.failed(e.awsErrorDetails().errorMessage());
+        }
     }
 }

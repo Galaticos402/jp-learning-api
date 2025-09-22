@@ -22,6 +22,7 @@ public class AuthResponseDto {
         responseDto.setAccessToken(null);
         responseDto.setRefreshToken(null);
         responseDto.setNeedConfirmation(true);
+        responseDto.setErrMsg(null);
         return responseDto;
     }
 
