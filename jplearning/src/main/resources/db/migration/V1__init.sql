@@ -15,12 +15,12 @@ CREATE TABLE VocabGroup (
 
 CREATE TABLE Vocab (
   vocab_id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-  kanji VARCHAR(50) NOT NULL,
-  sino_vi VARCHAR(100) NOT NULL,
-  ex_sentence VARCHAR(100) NOT NULL,
-  meaning VARCHAR(100) NOT NULL,
-  audio_path VARCHAR(100) NOT NULL,
-  image_path VARCHAR(100) NOT NULL,
+  kanji NVARCHAR(50) NOT NULL,
+  sino_vi NVARCHAR(100) NOT NULL,
+  ex_sentence NVARCHAR(100) NOT NULL,
+  meaning NVARCHAR(100) NOT NULL,
+  audio_path NVARCHAR(100) NOT NULL,
+  image_path NVARCHAR(100) NOT NULL,
   group_id UNIQUEIDENTIFIER NOT NULL,
   CONSTRAINT fk_vocab_group
       FOREIGN KEY (group_id)
