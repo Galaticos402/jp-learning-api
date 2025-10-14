@@ -1,5 +1,6 @@
 package com.self.jplearning.filter;
 
+import com.self.jplearning.config.property.CognitoProperties;
 import com.self.jplearning.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

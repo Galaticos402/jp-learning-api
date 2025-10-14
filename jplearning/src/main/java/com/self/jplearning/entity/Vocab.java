@@ -12,7 +12,7 @@ public class Vocab {
     public static final String VOCAB_ID = "vocab_id";
     public static final String KANJI = "kanji";
     public static final String FURIGANA = "furigana";
-    public static final String SINO_V = "sino_v";
+    public static final String SINO_V = "sino_vi";
     public static final String EX_SENTENCE = "ex_sentence";
     public static final String EX_SENTENCE_MEANING = "ex_sentence_meaning";
     public static final String MEANING = "meaning";
