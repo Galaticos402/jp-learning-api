@@ -22,10 +22,10 @@ public class SecurityConfig{
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
                                 "/swagger-ui.html",
-                                "/webjars/**",
-                                "/api/auth/**"
+                                "/webjars/**"
+//                                "/api/auth/**"
                         ).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .cors(cors -> {})
                 .csrf(AbstractHttpConfigurer::disable);

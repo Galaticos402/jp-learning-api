@@ -1,5 +1,8 @@
 package com.self.jplearning.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,8 +28,12 @@ public class VocabGroup {
 
     @ManyToOne
     @JoinColumn(name = VocabGroup.PARENT_GROUP_ID)
+    @JsonBackReference
+    @JsonIgnore
     private VocabGroup parentGroup;
 
     @OneToMany(mappedBy = PARENT_GROUP)
+    @JsonManagedReference
+    @JsonIgnore
     private List<VocabGroup> childGroups;
 }

@@ -1,12 +1,14 @@
 package com.self.jplearning.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/vocab")
+@PreAuthorize("isAuthenticated()")
 public class VocabController {
     @GetMapping(value = "/list")
     public ResponseEntity<String> getVocabList() {
