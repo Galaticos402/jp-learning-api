@@ -19,14 +19,14 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authrq) -> authrq
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/swagger-ui.html",
-                                "/webjars/**",
-                                "/api/auth/**"
-                        ).permitAll()
+//                        .requestMatchers(
+//                                "/swagger-ui/**",
+//                                "/v3/api-docs/**",
+//                                "/swagger-resources/**",
+//                                "/swagger-ui.html",
+//                                "/webjars/**",
+//                                "/api/auth/**"
+//                        ).permitAll()
                         .anyRequest().permitAll()
                 )
                 .cors(cors -> {})
