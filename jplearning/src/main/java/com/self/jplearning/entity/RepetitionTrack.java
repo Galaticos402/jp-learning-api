@@ -1,5 +1,7 @@
 package com.self.jplearning.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.self.jplearning.enums.LearningStateEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,12 +13,31 @@ import java.util.UUID;
 @Table(name = "[RepetitionTrack]")
 public class RepetitionTrack {
     public static final String TRACK_ID = "track_id";
-    public static final String NEXT_REPETITION_TIME = "next_repetition_time";
+    public static final String DUE_DATE = "due_date";
+    public static final String LEARNING_STATE = "learning_state";
+    public static final String EASE_FACTOR = "ease_factor";
+    public static final String LEARNING_STEP = "learning_step";
+    public static final String LAPSE = "lapse";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = TRACK_ID)
     private UUID trackId;
+
+    @Column(name = DUE_DATE)
+    private Date dueDate;
+
+    @Column(name = LEARNING_STATE)
+    private String learningState;
+
+    @Column(name = EASE_FACTOR)
+    private float easeFactor;
+
+    @Column(name = LEARNING_STEP)
+    private int learningStep;
+
+    @Column(name = LAPSE)
+    private int lapse;
 
     @ManyToOne
     @JoinColumn(name = SystemUser.USER_ID)
@@ -26,6 +47,5 @@ public class RepetitionTrack {
     @JoinColumn(name = Vocab.VOCAB_ID)
     private Vocab vocab;
 
-    @Column(name = NEXT_REPETITION_TIME)
-    private Date nextRepetitionTime;
+
 }

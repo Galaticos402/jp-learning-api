@@ -33,7 +33,11 @@ CREATE TABLE RepetitionTrack (
   track_id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
   user_id UNIQUEIDENTIFIER NOT NULL,
   vocab_id UNIQUEIDENTIFIER NOT NULL,
-  next_repetition_time DATE NOT NULL,
+  due_date DATE NOT NULL,
+  learning_state NVARCHAR(100) NOT NULL,
+  ease_factor float,
+  learning_step int,
+  lapse int,
   CONSTRAINT fk_track_user
         FOREIGN KEY (user_id)
         REFERENCES SystemUser(user_id)
