@@ -1,0 +1,2 @@
+ALTER TABLE VocabGroup
+ADD image_key NVARCHAR(255);
