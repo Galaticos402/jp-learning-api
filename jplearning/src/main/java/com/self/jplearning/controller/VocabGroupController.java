@@ -1,6 +1,8 @@
 package com.self.jplearning.controller;
 
+import com.self.jplearning.dto.vocabgroup.VocabGroupResponseDto;
 import com.self.jplearning.entity.VocabGroup;
+import com.self.jplearning.mapper.VocabGroupResponseMapper;
 import com.self.jplearning.service.VocabGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +22,12 @@ import java.util.List;
 public class VocabGroupController {
     @Autowired
     private VocabGroupService vocabGroupService;
+    @Autowired
+    private VocabGroupResponseMapper vocabGroupResponseMapper;
     @GetMapping(value = "/root")
-    public ResponseEntity<List<VocabGroup>> getRootGroups() {
+    public ResponseEntity<List<VocabGroupResponseDto>> getRootGroups() {
         String currentLoginUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(vocabGroupService.getRootVocabGroups());
+        return ResponseEntity.ok(vocabGroupResponseMapper.toListOfVocabGroupResponseDto(vocabGroupService.getRootVocabGroups()));
     }
     @GetMapping(value = "/parent/{parentId}")
     public ResponseEntity<List<VocabGroup>> getGroupsByParentId(@PathVariable("parentId") String parentId) {

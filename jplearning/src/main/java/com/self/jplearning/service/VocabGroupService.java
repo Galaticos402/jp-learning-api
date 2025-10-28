@@ -14,7 +14,7 @@ public class VocabGroupService {
     private IVocabGroupRepository vocabGroupRepository;
 
     public List<VocabGroup> getRootVocabGroups(){
-        return vocabGroupRepository.findByParentGroupIsNull();
+        return vocabGroupRepository.findByParentGroupIsNullOrderByGroupNameAsc();
     }
 
     public List<VocabGroup> getGroupsByParentId(String parentId){

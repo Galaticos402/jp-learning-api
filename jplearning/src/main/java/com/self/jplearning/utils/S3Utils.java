@@ -1,8 +1,5 @@
-package com.self.jplearning.service;
+package com.self.jplearning.utils;
 
-import com.self.jplearning.config.property.S3Properties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
@@ -11,10 +8,8 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 
 import java.time.Duration;
 
-@Service
-public class S3Service {
-
-    public String getPresignedUrl(String bucketName, String objectKey){
+public class S3Utils {
+    public static String getPresignedUrl(String bucketName, String objectKey){
         S3Presigner presigner = S3Presigner.builder()
                 .region(Region.US_EAST_1)
                 .credentialsProvider(DefaultCredentialsProvider.create())

@@ -15,6 +15,7 @@ import java.util.UUID;
 public class VocabGroup {
     public static final String GROUP_ID = "group_id";
     public static final String GROUP_NAME = "group_name";
+    public static final String IMAGE_KEY = "image_key";
     public static final String PARENT_GROUP_ID = "parent_group_id";
     public static final String PARENT_GROUP = "parentGroup";
 
@@ -25,6 +26,9 @@ public class VocabGroup {
 
     @Column(name = GROUP_NAME)
     private String groupName;
+
+    @Column(name = IMAGE_KEY)
+    private String imageKey;
 
     @ManyToOne
     @JoinColumn(name = VocabGroup.PARENT_GROUP_ID)

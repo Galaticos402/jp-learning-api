@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IVocabGroupRepository extends JpaRepository<VocabGroup, UUID> {
-    List<VocabGroup> findByParentGroupIsNull();
+    List<VocabGroup> findByParentGroupIsNullOrderByGroupNameAsc();
     List<VocabGroup> findByParentGroup_GroupId(UUID parentGroupId);
 }
