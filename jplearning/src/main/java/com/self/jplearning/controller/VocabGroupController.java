@@ -30,8 +30,8 @@ public class VocabGroupController {
         return ResponseEntity.ok(vocabGroupResponseMapper.toListOfVocabGroupResponseDto(vocabGroupService.getRootVocabGroups()));
     }
     @GetMapping(value = "/parent/{parentId}")
-    public ResponseEntity<List<VocabGroup>> getGroupsByParentId(@PathVariable("parentId") String parentId) {
+    public ResponseEntity<List<VocabGroupResponseDto>> getGroupsByParentId(@PathVariable("parentId") String parentId) {
         String currentLoginUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(vocabGroupService.getGroupsByParentId(parentId));
+        return ResponseEntity.ok(vocabGroupResponseMapper.toListOfVocabGroupResponseDto(vocabGroupService.getGroupsByParentId(parentId)));
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class VocabGroupResponseMapper {
@@ -19,7 +20,9 @@ public class VocabGroupResponseMapper {
         VocabGroupResponseDto responseDto = new VocabGroupResponseDto();
         responseDto.setGroupId(vocabGroup.getGroupId());
         responseDto.setGroupName(vocabGroup.getGroupName());
-        responseDto.setImageUrl(S3Utils.getPresignedUrl(staticContentBucket, vocabGroup.getImageKey()));
+        if(!Objects.isNull(vocabGroup.getImageKey())){
+            responseDto.setImageUrl(S3Utils.getPresignedUrl(staticContentBucket, vocabGroup.getImageKey()));
+        }
         return responseDto;
     }
 

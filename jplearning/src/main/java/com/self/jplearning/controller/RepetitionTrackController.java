@@ -19,7 +19,7 @@ public class RepetitionTrackController {
     private RepetitionTrackService repetitionTrackService;
 
     @PostMapping(value = "/batch-update")
-    public ResponseEntity<Boolean> getVocabsByGroup(@RequestBody List<RepetitionTrack> repetitionTrackList) {
+    public ResponseEntity<Boolean> trackBatchUpdate(@RequestBody List<RepetitionTrack> repetitionTrackList) {
         String currentLoginUser = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(repetitionTrackService.batchUpdate(repetitionTrackList, currentLoginUser));
     }

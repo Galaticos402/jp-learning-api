@@ -14,10 +14,10 @@ public class VocabGroupService {
     private IVocabGroupRepository vocabGroupRepository;
 
     public List<VocabGroup> getRootVocabGroups(){
-        return vocabGroupRepository.findByParentGroupIsNullOrderByGroupNameAsc();
+        return vocabGroupRepository.findByParentGroupIsNullOrderByOrdAsc();
     }
 
     public List<VocabGroup> getGroupsByParentId(String parentId){
-            return vocabGroupRepository.findByParentGroup_GroupId(UUID.fromString(parentId));
+        return vocabGroupRepository.findByParentGroup_GroupIdOrderByOrdAsc(UUID.fromString(parentId));
     }
 }

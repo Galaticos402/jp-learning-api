@@ -17,6 +17,7 @@ public class VocabGroup {
     public static final String GROUP_NAME = "group_name";
     public static final String IMAGE_KEY = "image_key";
     public static final String PARENT_GROUP_ID = "parent_group_id";
+    public static final String ORD = "ord";
     public static final String PARENT_GROUP = "parentGroup";
 
     @Id
@@ -29,6 +30,9 @@ public class VocabGroup {
 
     @Column(name = IMAGE_KEY)
     private String imageKey;
+
+    @Column(name = ORD)
+    private String ord;
 
     @ManyToOne
     @JoinColumn(name = VocabGroup.PARENT_GROUP_ID)
