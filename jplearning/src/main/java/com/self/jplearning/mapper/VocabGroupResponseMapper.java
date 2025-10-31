@@ -20,6 +20,7 @@ public class VocabGroupResponseMapper {
         VocabGroupResponseDto responseDto = new VocabGroupResponseDto();
         responseDto.setGroupId(vocabGroup.getGroupId());
         responseDto.setGroupName(vocabGroup.getGroupName());
+        responseDto.setLeaf(vocabGroup.isLeaf());
         if(!Objects.isNull(vocabGroup.getImageKey())){
             responseDto.setImageUrl(S3Utils.getPresignedUrl(staticContentBucket, vocabGroup.getImageKey()));
         }

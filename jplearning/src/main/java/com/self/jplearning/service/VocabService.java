@@ -1,5 +1,6 @@
 package com.self.jplearning.service;
 
+import com.self.jplearning.dto.vocab.VocabResponseDto;
 import com.self.jplearning.entity.Vocab;
 import com.self.jplearning.repository.IVocabRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class VocabService {
     @Autowired
     private IVocabRepository vocabRepository;
 
-    public List<Vocab> getVocabsByGroup(String groupId){
-        return vocabRepository.findByVocabGroup_GroupId(UUID.fromString(groupId));
+    public List<VocabResponseDto> findVocabsByGroupIdAndUserId(String groupId, String userId){
+        return vocabRepository.findVocabsByGroupIdAndUserId(UUID.fromString(groupId), UUID.fromString(userId));
     }
 }

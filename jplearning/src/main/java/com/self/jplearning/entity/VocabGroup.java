@@ -18,6 +18,7 @@ public class VocabGroup {
     public static final String IMAGE_KEY = "image_key";
     public static final String PARENT_GROUP_ID = "parent_group_id";
     public static final String ORD = "ord";
+    public static final String IS_LEAF = "is_leaf";
     public static final String PARENT_GROUP = "parentGroup";
 
     @Id
@@ -33,6 +34,9 @@ public class VocabGroup {
 
     @Column(name = ORD)
     private String ord;
+
+    @Column(name = IS_LEAF)
+    private boolean isLeaf;
 
     @ManyToOne
     @JoinColumn(name = VocabGroup.PARENT_GROUP_ID)

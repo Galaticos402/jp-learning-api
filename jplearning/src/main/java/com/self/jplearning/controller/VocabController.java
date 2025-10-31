@@ -1,5 +1,6 @@
 package com.self.jplearning.controller;
 
+import com.self.jplearning.dto.vocab.VocabResponseDto;
 import com.self.jplearning.entity.Vocab;
 import com.self.jplearning.repository.IVocabRepository;
 import com.self.jplearning.service.VocabService;
@@ -19,8 +20,8 @@ public class VocabController {
     @Autowired
     private VocabService vocabService;
     @GetMapping(value = "/group/{groupId}")
-    public ResponseEntity<List<Vocab>> getVocabsByGroup(@PathVariable("groupId") String groupId) {
+    public ResponseEntity<List<VocabResponseDto>> getVocabsByGroup(@PathVariable("groupId") String groupId) {
         String currentLoginUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(vocabService.getVocabsByGroup(groupId));
+        return ResponseEntity.ok(vocabService.findVocabsByGroupIdAndUserId(groupId, currentLoginUser));
     }
 }
