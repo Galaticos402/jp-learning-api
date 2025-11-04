@@ -77,7 +77,13 @@ public class RepetitionTrackService {
             if (rating.getValue() == LearningStatusEnum.AGAIN.getValue()){
                 currentTrack.setLearningStep(0);
                 currentTrack.setLearningState(LearningStateEnum.LEARNING.getValue());
-            }else{
+            } else if (rating.getValue() == LearningStatusEnum.GOOD.getValue()) {
+                currentTrack.setLearningState(LearningStateEnum.REVIEW.getValue());
+                currentTrack.setInterval(1);
+                currentTrack.setDueDate(DateUtils.add(new Date(), 1, DateUtils.DAY));
+                currentTrack.setEaseFactor(2.5f);
+                currentTrack.setLearningStep(0);
+            } else{
                 currentTrack.setLearningStep(currentTrack.getLearningStep() + 1);
                 if(currentTrack.getLearningStep() > 1 || timeOfLearning > 1){
                     currentTrack.setLearningState(LearningStateEnum.REVIEW.getValue());
@@ -113,6 +119,7 @@ public class RepetitionTrackService {
                 float easeFactor = currentTrack.getEaseFactor() + AnkiConstant.EASY_EASE_INCREMENT;
                 currentTrack.setInterval(interval);
                 currentTrack.setEaseFactor(easeFactor);
+                currentTrack.setDueDate(DateUtils.add(new Date(), interval, DateUtils.DAY));
             }
         } else if (currentTrack.getLearningState().equalsIgnoreCase(LearningStateEnum.RELEARNING.getValue())) {
             if(rating.getValue() == LearningStatusEnum.AGAIN.getValue()){

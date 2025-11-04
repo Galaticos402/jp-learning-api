@@ -1,4 +1,3 @@
-
 ALTER TABLE RepetitionTrack
 ADD interval int NOT NULL DEFAULT 0;
 
