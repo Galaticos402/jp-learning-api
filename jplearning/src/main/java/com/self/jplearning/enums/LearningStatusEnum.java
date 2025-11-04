@@ -1,7 +1,7 @@
 package com.self.jplearning.enums;
 
 public enum LearningStatusEnum {
-    FORGOT(0),
+    AGAIN(0),
     HARD(1),
     GOOD(2),
     EASY(3);

@@ -17,12 +17,10 @@ public class ExtendedRepetitionTrackRepositoryImpl implements IExtendedRepetitio
 
     @Override
     @Transactional
-    public boolean batchUpdate(List<RepetitionTrack> repetitionTrackList, String userId) {
+    public boolean batchUpdate(List<RepetitionTrack> repetitionTrackList) {
         int BATCH_SIZE = 50;
         for (int i = 0; i < repetitionTrackList.size(); i++) {
-            RepetitionTrack trackWithAttachedUserId = repetitionTrackList.get(i);
-            trackWithAttachedUserId.getUser().setUserId(UUID.fromString(userId));
-            entityManager.merge(trackWithAttachedUserId);
+            entityManager.merge(repetitionTrackList.get(i));
             if (i > 0 && i % BATCH_SIZE == 0) {
                 entityManager.flush();
                 entityManager.clear();

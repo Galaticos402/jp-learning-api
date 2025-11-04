@@ -3,6 +3,7 @@ package com.self.jplearning.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.self.jplearning.enums.LearningStateEnum;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,6 +19,7 @@ public class RepetitionTrack {
     public static final String EASE_FACTOR = "ease_factor";
     public static final String LEARNING_STEP = "learning_step";
     public static final String LAPSE = "lapse";
+    public static final String INTERVAL = "interval";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,8 +38,11 @@ public class RepetitionTrack {
     @Column(name = LEARNING_STEP)
     private int learningStep;
 
-    @Column(name = LAPSE)
-    private int lapse;
+//    @Column(name = LAPSE)
+//    private int lapse;
+
+    @Column(name = INTERVAL)
+    private int interval;
 
     @ManyToOne
     @JoinColumn(name = SystemUser.USER_ID)
@@ -47,5 +52,12 @@ public class RepetitionTrack {
     @JoinColumn(name = Vocab.VOCAB_ID)
     private Vocab vocab;
 
+    public void initialize(){
+        this.setLearningStep(0);
+        this.setDueDate(new Date());
+        this.setInterval(0);
+        this.setLearningState(LearningStateEnum.NEW.getValue());
+        this.setEaseFactor(2.5f);
+    }
 
 }

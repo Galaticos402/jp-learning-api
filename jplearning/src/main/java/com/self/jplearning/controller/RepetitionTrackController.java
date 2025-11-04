@@ -1,5 +1,7 @@
 package com.self.jplearning.controller;
 
+import com.self.jplearning.dto.repetition_track.RepetitionTrackProgressSyncRequest;
+import com.self.jplearning.dto.repetition_track.RepetitionTrackProgressSyncResponse;
 import com.self.jplearning.entity.RepetitionTrack;
 import com.self.jplearning.entity.Vocab;
 import com.self.jplearning.service.RepetitionTrackService;
@@ -18,9 +20,16 @@ public class RepetitionTrackController {
     @Autowired
     private RepetitionTrackService repetitionTrackService;
 
-    @PostMapping(value = "/batch-update")
-    public ResponseEntity<Boolean> trackBatchUpdate(@RequestBody List<RepetitionTrack> repetitionTrackList) {
+    @PostMapping(value = "/session/start/{groupId}")
+    public ResponseEntity<Boolean> initSession(@PathVariable("groupId") String groupId){
         String currentLoginUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(repetitionTrackService.batchUpdate(repetitionTrackList, currentLoginUser));
+        return ResponseEntity.ok(repetitionTrackService.initLearningSession(groupId, currentLoginUser));
+    }
+
+
+    @PostMapping(value = "/progress/sync")
+    public ResponseEntity<RepetitionTrackProgressSyncResponse> syncProgress(@RequestBody List<RepetitionTrackProgressSyncRequest> syncReqList){
+        String currentLoginUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(repetitionTrackService.syncProgress(syncReqList, currentLoginUser));
     }
 }

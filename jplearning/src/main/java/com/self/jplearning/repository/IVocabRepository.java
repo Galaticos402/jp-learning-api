@@ -8,10 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface IVocabRepository extends JpaRepository<Vocab, UUID> {
     List<Vocab> findByVocabGroup_GroupId(UUID groupId);
+
+    Optional<Vocab> findByVocabId(UUID vocabId);
 
     @Query(QueryUtils.QUERY_VOCABS_PER_LEARNING)
     List<VocabResponseDto> findVocabsByGroupIdAndUserId(@Param("group_id") UUID groupId, @Param("user_id") UUID userId);
