@@ -16,6 +16,6 @@ public interface IVocabRepository extends JpaRepository<Vocab, UUID> {
 
     Optional<Vocab> findByVocabId(UUID vocabId);
 
-    @Query(QueryUtils.QUERY_VOCABS_PER_LEARNING)
-    List<VocabResponseDto> findVocabsByGroupIdAndUserId(@Param("group_id") UUID groupId, @Param("user_id") UUID userId);
+    @Query(QueryUtils.QUERY_DUE_VOCABS)
+    List<VocabResponseDto> findDueVocabsByGroupIdAndUserId(@Param("group_id") UUID groupId, @Param("user_id") UUID userId);
 }

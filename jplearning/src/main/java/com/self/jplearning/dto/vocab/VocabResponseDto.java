@@ -9,5 +9,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class VocabResponseDto {
     private Vocab vocab;
-    private String cluster;
+    private String learningState;
+    private int learningStep;
 }

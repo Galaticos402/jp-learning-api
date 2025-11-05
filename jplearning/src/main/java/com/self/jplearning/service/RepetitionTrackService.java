@@ -68,16 +68,20 @@ public class RepetitionTrackService {
 
     public RepetitionTrack updateLearningProgress(String userId, String vocabId, LearningStatusEnum rating, int timeOfLearning){
         RepetitionTrack currentTrack = findByUserIdAndVocabId(userId, vocabId);
-//        if(Objects.isNull(currentTrack)){
-//            // This word was not initialized, initialize now
-////            currentTrack = new RepetitionTrack();
-////            currentTrack.set
-//        }
+        if(Objects.isNull(currentTrack)){
+            // This word has not been initialized, initialize now
+            currentTrack = new RepetitionTrack();
+            SystemUser user = userRepository.findByUserId(UUID.fromString(userId)).orElse(null);
+            Vocab vocab = vocabRepository.findByVocabId(UUID.fromString(vocabId)).orElse(null);
+            currentTrack.initialize();
+            currentTrack.setVocab(vocab);
+            currentTrack.setUser(user);
+        }
         if (currentTrack.getLearningState().equalsIgnoreCase(LearningStateEnum.NEW.getValue()) || currentTrack.getLearningState().equalsIgnoreCase(LearningStateEnum.LEARNING.getValue())){
             if (rating.getValue() == LearningStatusEnum.AGAIN.getValue()){
                 currentTrack.setLearningStep(0);
                 currentTrack.setLearningState(LearningStateEnum.LEARNING.getValue());
-            } else if (rating.getValue() == LearningStatusEnum.GOOD.getValue()) {
+            } else if (rating.getValue() == LearningStatusEnum.EASY.getValue()) {
                 currentTrack.setLearningState(LearningStateEnum.REVIEW.getValue());
                 currentTrack.setInterval(1);
                 currentTrack.setDueDate(DateUtils.add(new Date(), 1, DateUtils.DAY));

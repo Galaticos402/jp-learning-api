@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -19,9 +20,11 @@ import java.util.List;
 public class VocabController {
     @Autowired
     private VocabService vocabService;
-    @GetMapping(value = "/group/{groupId}")
-    public ResponseEntity<List<VocabResponseDto>> getVocabsByGroup(@PathVariable("groupId") String groupId) {
+    @GetMapping(value = "/due/{groupId}")
+    public ResponseEntity<List<VocabResponseDto>> getDueVocabs(@PathVariable("groupId") String groupId) {
         String currentLoginUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(vocabService.findVocabsByGroupIdAndUserId(groupId, currentLoginUser));
+        List<VocabResponseDto> duedVocabs = vocabService.findDueVocabsByGroupIdAndUserId(groupId, currentLoginUser);
+        Collections.shuffle(duedVocabs);
+        return ResponseEntity.ok(duedVocabs);
     }
 }

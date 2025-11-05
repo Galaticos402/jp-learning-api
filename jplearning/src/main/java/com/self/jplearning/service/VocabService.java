@@ -15,7 +15,7 @@ public class VocabService {
     @Autowired
     private IVocabRepository vocabRepository;
 
-    public List<VocabResponseDto> findVocabsByGroupIdAndUserId(String groupId, String userId){
-        return vocabRepository.findVocabsByGroupIdAndUserId(UUID.fromString(groupId), UUID.fromString(userId));
+    public List<VocabResponseDto> findDueVocabsByGroupIdAndUserId(String groupId, String userId){
+        return vocabRepository.findDueVocabsByGroupIdAndUserId(UUID.fromString(groupId), UUID.fromString(userId));
     }
 }
