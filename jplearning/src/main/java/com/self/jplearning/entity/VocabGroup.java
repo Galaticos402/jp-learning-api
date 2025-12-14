@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "[VocabGroup]")
+@Table(name = "[vocab_group]")
 public class VocabGroup {
     public static final String GROUP_ID = "group_id";
     public static final String GROUP_NAME = "group_name";
@@ -23,16 +23,16 @@ public class VocabGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = GROUP_ID)
+    @Column(name = GROUP_ID, columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID groupId;
 
-    @Column(name = GROUP_NAME)
+    @Column(name = GROUP_NAME, length = 50)
     private String groupName;
 
-    @Column(name = IMAGE_KEY)
+    @Column(name = IMAGE_KEY, length = 50)
     private String imageKey;
 
-    @Column(name = ORD)
+    @Column(name = ORD, length = 10)
     private String ord;
 
     @Column(name = IS_LEAF)

@@ -1,52 +1,77 @@
-CREATE DATABASE JPLearningApp;
+CREATE DATABASE "jp-elearning"
+OWNER "quandm18"
+ENCODING 'UTF8';
 
-USE JPLearningApp;
+ create table "system_user" (
+         user_id uuid not null,
+         email varchar(50),
+         primary key (user_id)
+     );
 
+ create table "repetition_track" (
+        track_id uuid not null,
+        due_date timestamp(6),
+        ease_factor float4,
+        interval integer,
+        learning_state varchar(255),
+        learning_step integer,
+        user_id uuid,
+        vocab_id uuid,
+        primary key (track_id)
+ );
 
-CREATE TABLE SystemUser (
-  user_id UNIQUEIDENTIFIER PRIMARY KEY,
-  email VARCHAR(100) NOT NULL,
-);
+ create table "vocab" (
+         vocab_id uuid not null,
+         audio_path varchar(100),
+         ex_sentence text,
+         ex_sentence_meaning text,
+         furigana varchar(50),
+         image_path varchar(100),
+         kanji varchar(50),
+         meaning text,
+         sino_vi varchar(50),
+         group_id uuid,
+         primary key (vocab_id)
+     );
 
-CREATE TABLE VocabGroup (
-    group_id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    group_name VARCHAR(50) NOT NULL,
-);
+ create table "vocab_group" (
+         group_id uuid not null,
+         group_name varchar(50),
+         image_key varchar(50),
+         is_leaf boolean,
+         ord varchar(10),
+         parent_group_id uuid,
+         primary key (group_id)
+     );
 
-CREATE TABLE Vocab (
-  vocab_id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-  kanji NVARCHAR(50) NOT NULL,
-  sino_vi NVARCHAR(100) NOT NULL,
-  ex_sentence NVARCHAR(100) NOT NULL,
-  meaning NVARCHAR(100) NOT NULL,
-  audio_path NVARCHAR(100) NOT NULL,
-  image_path NVARCHAR(100) NOT NULL,
-  group_id UNIQUEIDENTIFIER NOT NULL,
-  CONSTRAINT fk_vocab_group
-      FOREIGN KEY (group_id)
-      REFERENCES VocabGroup(group_id)
-      ON DELETE CASCADE
-      ON UPDATE CASCADE
-);
+alter table if exists "repetition_track"
+       add constraint FKj0atxtf9gd6jmhvhpjvv6xnmx
+       foreign key (user_id)
+       references "system_user";
 
-CREATE TABLE RepetitionTrack (
-  track_id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-  user_id UNIQUEIDENTIFIER NOT NULL,
-  vocab_id UNIQUEIDENTIFIER NOT NULL,
-  due_date DATE NOT NULL,
-  learning_state NVARCHAR(100) NOT NULL,
-  ease_factor float,
-  learning_step int,
-  lapse int,
-  CONSTRAINT fk_track_user
-        FOREIGN KEY (user_id)
-        REFERENCES SystemUser(user_id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-  CONSTRAINT fk_track_vocab
-          FOREIGN KEY (vocab_id)
-          REFERENCES Vocab(vocab_id)
-          ON DELETE CASCADE
-          ON UPDATE CASCADE,
-);
+alter table if exists "repetition_track"
+        add constraint FKft1ig0mplue8jrsbl4ij1i9cj
+        foreign key (vocab_id)
+        references "vocab";
 
+alter table if exists "vocab"
+       add constraint FKd6qmjsyfxpqw17uvvewm2i1dt
+       foreign key (group_id)
+       references "vocab_group";
+
+alter table if exists "vocab_group"
+       add constraint FKjxymkorn5grdbaxhqaywchkc7
+       foreign key (parent_group_id)
+       references "vocab_group";
+
+ALTER TABLE "vocab"
+ALTER COLUMN "vocab_id" SET DEFAULT gen_random_uuid();
+
+ALTER TABLE "vocab_group"
+ALTER COLUMN "group_id" SET DEFAULT gen_random_uuid();
+
+ALTER TABLE "system_user"
+ALTER COLUMN "user_id" SET DEFAULT gen_random_uuid();
+
+ALTER TABLE "repetition_track"
+ALTER COLUMN "track_id" SET DEFAULT gen_random_uuid();

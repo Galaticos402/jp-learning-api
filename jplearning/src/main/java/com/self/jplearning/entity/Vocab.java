@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "[Vocab]")
+@Table(name = "[vocab]")
 public class Vocab {
     public static final String VOCAB_ID = "vocab_id";
     public static final String KANJI = "kanji";
@@ -20,31 +20,31 @@ public class Vocab {
     public static final String IMAGE_PATH = "image_path";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = VOCAB_ID)
+    @Column(name = VOCAB_ID, columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID vocabId;
 
-    @Column(name = KANJI)
+    @Column(name = KANJI, length = 50)
     private String kanji;
 
-    @Column(name = FURIGANA)
+    @Column(name = FURIGANA, length = 50)
     private String furigana;
 
-    @Column(name = SINO_V)
+    @Column(name = SINO_V, length = 50)
     private String sinoV;
 
-    @Column(name = EX_SENTENCE)
+    @Column(name = EX_SENTENCE, columnDefinition = "text")
     private String exSentence;
 
-    @Column(name = EX_SENTENCE_MEANING)
+    @Column(name = EX_SENTENCE_MEANING, columnDefinition = "text")
     private String exSentenceMeaning;
 
-    @Column(name = MEANING)
+    @Column(name = MEANING, columnDefinition = "text")
     private String meaning;
 
-    @Column(name = AUDIO_PATH)
+    @Column(name = AUDIO_PATH, length = 100)
     private String audioPath;
 
-    @Column(name = IMAGE_PATH)
+    @Column(name = IMAGE_PATH, length = 100)
     private String imagePath;
 
     @ManyToOne

@@ -1,5 +1,0 @@
-ALTER TABLE Vocab
-ADD furigana NVARCHAR(50) NULL;
-
-ALTER TABLE Vocab
-ADD ex_sentence_meaning NVARCHAR(512) NULL;

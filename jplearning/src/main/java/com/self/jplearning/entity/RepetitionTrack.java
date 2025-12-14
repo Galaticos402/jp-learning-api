@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "[RepetitionTrack]")
+@Table(name = "[repetition_track]")
 public class RepetitionTrack {
     public static final String TRACK_ID = "track_id";
     public static final String DUE_DATE = "due_date";
@@ -23,7 +23,7 @@ public class RepetitionTrack {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = TRACK_ID)
+    @Column(name = TRACK_ID, columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID trackId;
 
     @Column(name = DUE_DATE)
